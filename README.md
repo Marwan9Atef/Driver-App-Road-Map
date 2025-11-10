@@ -1,7 +1,8 @@
+
 # Driver-App-Road-Map
 
 A project for organizing work with a team.  
-This repository provides a structured approach for implementing UI constraints, navigation, and utility extensions in a Flutter application.
+This repository provides a structured approach for implementing UI constraints, navigation, utility extensions, and responsive design in a Flutter application.
 
 ---
 
@@ -12,7 +13,11 @@ This repository provides a structured approach for implementing UI constraints, 
        - [Context Util](#context-util)  
        - [Sizebox Util](#sizebox-util)  
    1.2 [Navigation with Go Router](#navigation-with-go-router)  
-2. [Explanation of Files](#explanation-of-files)  
+2. [Assets](#assets)  
+3. [AppColor](#appcolor)  
+4. [AppStyles](#appstyles)  
+5. [SizeConfig](#sizeconfig)  
+6. [Explanation of Files](#explanation-of-files)  
 
 ---
 
@@ -27,30 +32,45 @@ This repository provides a structured approach for implementing UI constraints, 
 **Purpose:**  
 The `ContextUtil` extension adds convenient shortcuts for commonly used Flutter `BuildContext` properties. It helps reduce boilerplate code when accessing `MediaQuery`, `Theme`, padding, screen size, and keyboard info.
 
-**Code (as text):**
+---
+
+### Old Way vs New Way
+
+**Old Way** (without `ContextUtil`):
 ```
 
 import 'package:flutter/material.dart';
 
-extension ContextUtil on BuildContext {
-MediaQueryData get mediaQuery => MediaQuery.of(this);
-ThemeData get theme => Theme.of(this);
-TextTheme get textTheme => theme.textTheme;
-bool get isDarkMode => theme.brightness == Brightness.dark;
-Size get screenSize => mediaQuery.size;
-double get screenWidth => screenSize.width;
-double get screenHeight => screenSize.height;
-EdgeInsets get padding => mediaQuery.padding;
-EdgeInsets get viewInsets => mediaQuery.viewInsets;
-double get statusBarHeight => padding.top;
-double get bottomBarHeight => padding.bottom;
-double get keyboardHeight => viewInsets.bottom;
+class HomePage extends StatelessWidget {
+@override
+Widget build(BuildContext context) {
+final mediaQuery = MediaQuery.of(context);
+final theme = Theme.of(context);
+
+```
+
+```
+return Scaffold(
+  body: Padding(
+    padding: EdgeInsets.only(top: mediaQuery.padding.top),
+    child: Center(
+      child: Text(
+        'Hello World',
+        style: theme.textTheme.headlineMedium,
+      ),
+    ),
+  ),
+);
+}
 }
 
 ```
 
-**Minimal Usage Example (as text):**
+**New Way** (with `ContextUtil`):
 ```
+
+import 'package:flutter/material.dart';
+import 'core/utils/context_util.dart';
 
 class HomePage extends StatelessWidget {
 @override
@@ -72,15 +92,8 @@ style: context.textTheme.headlineMedium,
 ```
 
 **Explanation:**  
-- `context.screenWidth` / `context.screenHeight` → screen dimensions  
-- `context.padding` → safe area padding  
-- `context.theme` / `context.textTheme` → access theme  
-- `context.isDarkMode` → check dark mode  
-- `context.keyboardHeight` → detect keyboard height  
-
-**Notes:**  
-- Replaces repetitive calls like `MediaQuery.of(context).size` or `Theme.of(context)`  
-- Everything is contained in this single README.
+- **Old Way:** Must repeatedly call `MediaQuery.of(context)` and `Theme.of(context)` → verbose  
+- **New Way:** Shortcuts like `context.statusBarHeight` and `context.textTheme` → cleaner, readable, less boilerplate  
 
 ---
 
@@ -89,7 +102,7 @@ style: context.textTheme.headlineMedium,
 **File location:** `core/utils/sizebox_util.dart`  
 
 **Purpose:**  
-The `SizeboxUtil` extension provides a convenient way to create `SizedBox` widgets directly from a `num` (int/double) for spacing in the UI. Reduces boilerplate and improves readability.
+Provides a convenient way to create `SizedBox` widgets from a `num` for spacing in the UI.  
 
 **Code (as text):**
 ```
@@ -109,7 +122,7 @@ SizedBox get hight => SizedBox(height: toDouble());
 Column(
 children: [
 Text('Above'),
-20.hight,  // 20 pixels vertical spacing
+20.hight, not SizedBox(hight:20)
 Text('Below'),
 ],
 );
@@ -117,31 +130,191 @@ Text('Below'),
 Row(
 children: [
 Text('Left'),
-15.width,  // 15 pixels horizontal spacing
+15.width,
 Text('Right'),
 ],
 );
 
 ```
 
-**Explanation:**  
-- `20.hight` → `SizedBox(height: 20)`  
-- `15.width` → `SizedBox(width: 15)`  
-- Replaces repetitive `SizedBox` calls with cleaner syntax  
-
 ---
 
 ### Navigation with Go Router
 
 **Purpose:**  
-Understand what the `go` method does and how to pass extra arguments when navigating. Also, know the organization of Go Router files.
+Understand what the `go` method does and how to pass extra arguments. Know the organization of Go Router files.
 
 **File Location:** `core/routes`  
-- `app_router.dart` → Main router configuration using Go Router  
-- `route_center.dart` → Defines named routes and navigation structure
+- `app_router.dart` → Main router configuration  
+- `route_center.dart` → Named routes and navigation structure  
+
+---
+
+## Assets
+
+**Purpose:**  
+Manage images, icons, and fonts efficiently in the app.
+
+**File Location:**  
+- `core/generated/assets.dart`  
+- **Automatically generated — do not edit manually.**
+
+**Example Generated File:**
+```
+
+class Assets {
+Assets._();
+
+static const String fontsMontserratMedium = 'assets/fonts/Montserrat-Medium.ttf';
+static const String fontsMontserratRegular = 'assets/fonts/Montserrat-Regular.ttf';
+static const String imagesAvatar1 = 'assets/images/avatar_1.svg';
+static const String imagesAvatar2 = 'assets/images/avatar_2.svg';
+static const String imagesAvatar3 = 'assets/images/avatar_3.svg';
+static const String imagesBalance = 'assets/images/balance.svg';
+static const String imagesCardBackground = 'assets/images/card_background.png';
+static const String imagesDashboard = 'assets/images/dashboard.svg';
+static const String imagesExpenses = 'assets/images/expenses.svg';
+static const String imagesGallery = 'assets/images/gallery.svg';
+static const String imagesIncome = 'assets/images/income.svg';
+static const String imagesLogout = 'assets/images/logout.svg';
+static const String imagesMyInvestments = 'assets/images/my_investments.svg';
+static const String imagesMyTransctions = 'assets/images/my_transctions.svg';
+static const String imagesSettings = 'assets/images/settings.svg';
+static const String imagesStatistics = 'assets/images/statistics.svg';
+static const String imagesWalletAccount = 'assets/images/wallet_account.svg';
+}
+
+```
+
+**Usage in Widgets:**
+```
+
+SvgPicture.asset(Assets.imagesAvatar1, width: 50, height: 50)
+Container(
+decoration: BoxDecoration(
+image: DecorationImage(
+image: AssetImage(Assets.imagesCardBackground),
+fit: BoxFit.cover,
+),
+),
+)
+
+```
 
 **Notes:**  
-- Before implementing UI and navigation, developers should understand **Go Router methods** and **file organization**.
+- Prefer **SVG files** for all icons/images.  
+- Do not manually edit `assets.dart`.  
+- Using generated references reduces errors and improves maintainability.  
+
+---
+
+## AppColor
+
+**File Location:** `core/utils/app_color.dart`  
+
+**Purpose:**  
+Centralizes all app colors for consistency and maintainability.
+
+**Code (as text):**
+```
+
+import 'dart:ui';
+
+class AppColor {
+static const Color primaryColor = Color(0xFF4EB7F2);
+static const Color darkBlue = Color(0xFF064060);
+static const Color lightBlue = Color(0xFF064061);
+static const Color white = Color(0xFFFFFFFF);
+static const Color offWhite = Color(0xFFFAFAFA);
+static const Color gray = Color(0xFFAAAAAA);
+}
+
+```
+
+**Usage:**
+```
+
+Text('Hello', style: TextStyle(color: AppColor.primaryColor))
+Container(color: AppColor.darkBlue)
+ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: AppColor.primaryColor))
+
+```
+
+---
+
+## AppStyles
+
+**File Location:** `core/utils/app_styles.dart`  
+
+**Purpose:**  
+Centralizes responsive text styles using `AppColor` and `SizeConfig`.
+
+**Code (as text):**
+```
+
+abstract class AppStyles {
+static TextStyle styleRegular16(context) {
+return TextStyle(
+color: AppColor.darkBlue,
+fontSize: getResponsiveFontSize(context, fontSize: 16),
+fontFamily: 'Montserrat',
+fontWeight: FontWeight.w400,
+);
+}
+
+static TextStyle styleBold16(BuildContext context) { ... }
+static TextStyle styleMedium16(BuildContext context) { ... }
+// Other styles...
+}
+
+double getResponsiveFontSize(context, {required double fontSize}) { ... }
+double getScaleFactor(context) { ... }
+
+```
+
+**Usage:**
+```
+
+Text('Hello', style: AppStyles.styleBold16(context))
+Text('Subtitle', style: AppStyles.styleRegular16(context))
+
+```
+
+---
+
+## SizeConfig
+
+**File Location:** `core/utils/size_config.dart`  
+
+**Purpose:**  
+Provides screen width/height and breakpoints for responsive layouts.
+
+**Code (as text):**
+```
+
+class SizeConfig {
+static const double desktop = 1200;
+static const double tablet = 800;
+
+static late double width, height;
+
+static init(BuildContext context) {
+height = MediaQuery.sizeOf(context).height;
+width = MediaQuery.sizeOf(context).width;
+}
+}
+
+```
+
+**Usage:**
+```
+
+SizeConfig.init(context);
+double screenWidth = SizeConfig.width;
+double screenHeight = SizeConfig.height;
+if (SizeConfig.width > SizeConfig.desktop) { ... }
+
+```
 
 ---
 
@@ -149,10 +322,14 @@ Understand what the `go` method does and how to pass extra arguments when naviga
 
 | File | Purpose |
 |------|---------|
-| `context_util.dart` | Provides `ContextUtil` extension for BuildContext shortcuts |
-| `sizebox_util.dart` | Provides `SizeboxUtil` extension for spacing |
-| `app_router.dart` | Main router configuration using Go Router |
-| `route_center.dart` | Defines named routes and navigation structure |
+| `context_util.dart` | BuildContext shortcuts |
+| `sizebox_util.dart` | SizedBox spacing shortcuts |
+| `app_router.dart` | Main router configuration |
+| `route_center.dart` | Named routes and navigation |
+| `assets.dart` | Generated asset references |
+| `app_color.dart` | Centralized colors |
+| `app_styles.dart` | Centralized responsive text styles |
+| `size_config.dart` | Screen size and breakpoints |
 
 
 
