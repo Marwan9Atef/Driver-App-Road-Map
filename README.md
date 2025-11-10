@@ -8,16 +8,18 @@ This repository provides a structured approach for implementing UI constraints, 
 
 ## Table of Contents
 
-1. [UI Constraints](#ui-constraints)  
-   1.1 [Extension](#extension)  
-       - [Context Util](#context-util)  
-       - [Sizebox Util](#sizebox-util)  
-   1.2 [Navigation with Go Router](#navigation-with-go-router)  
-2. [Assets](#assets)  
-3. [AppColor](#appcolor)  
-4. [AppStyles](#appstyles)  
-5. [SizeConfig](#sizeconfig)  
-6. [Explanation of Files](#explanation-of-files)  
+## [UI Constraints](#ui-constraints)  
+
+ 
+   1 [Extension](#extension)  
+      1.1 - [Context Util](#context-util)  
+      1.2 - [Sizebox Util](#sizebox-util)  
+2. [Navigation with Go Router](#navigation-with-go-router)  
+3. [Assets](#assets)  
+4. [AppColor](#appcolor)  
+5. [AppStyles](#appstyles)  
+6. [SizeConfig](#sizeconfig)  
+7. [Explanation of Files](#explanation-of-files)  
 
 ---
 
